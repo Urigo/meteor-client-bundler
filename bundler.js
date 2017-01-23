@@ -13,20 +13,27 @@ var exec = ChildProcess.execFileSync.bind(ChildProcess);
 Tmp.setGracefulCleanup();
 
 function bundle(options) {
-  var sourceDir = options.source;
-  var destinationFile = options.destination || require.resolve("meteor-client.js");
-  var configFile = options.config ||
+  var sourceDir = options.source &&
+    Path.resolve(options.source)
+  var destinationFile = options.destination ?
+    Path.resolve(options.destination) :
+    require.resolve("meteor-client.js");
+  var configFile = options.config ?
+    Path.resolve(options.config) :
     Path.resolve(__dirname, "meteor-client.config.json");
+
+  if (!sourceDir)
+    throw Error("Source dir must be provided");
 
   var config = require(configFile);
 
   // A temporary dir where the temporary Meteor project is gonna be created
   var tempDir = Tmp.dirSync({ unsafeCleanup: true }).name;
   // Raw packages dir of the built Meteor project
-  var packsDir = Path.resolve(tempDIr, "bundle/programs/web.browser/packages");
+  var packsDir = Path.resolve(tempDir, "bundle/programs/web.browser/packages");
 
   // Create a dummy Meteor project in temp dir
-  exec("meteor", ["create", tempDIr], {
+  exec("meteor", ["create", tempDir], {
     stdio: "inherit"
   });
 
@@ -85,8 +92,9 @@ function bundle(options) {
 
   // Append all specified packages
   packs.forEach(function (pack) {
-    var packPath = Path.resolve(packsDir, pack) + ".js";
-    var packContent = Fs.readFileSync(packPath) + "\n\n";
+    var packFileName = pack.replace(':', '_') + '.js';
+    var packFile = Path.resolve(packsDir, packFileName);
+    var packContent = Fs.readFileSync(packFile) + "\n\n";
     Fs.appendFileSync(destinationFile, packContent);
   });
 

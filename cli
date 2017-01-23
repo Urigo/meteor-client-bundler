@@ -20,18 +20,16 @@ Program
 
   .option("--src, --source [sourceDir]", [
     "A path for a Meteor project which already exists. This is useful if you want the",
-    "bundled packages to have the same versions as in the specified project. If not",
-    "specified, packages file will be composed based on the provided config, and the",
-    "the latest versions will be used."
+    "bundled packages to have the same versions as in the specified project"
   ]. join("\n" + optionIndention))
 
   .option("--dst, --destination [destinationFile]", [
-    "The path for the bundled module. Defaults to \"node_modules/meteor-client.js\"."
+    "The path for the bundled module. Defaults to \"node_modules/meteor-client.js\""
   ]. join("\n" + optionIndention))
 
   .option("--cfg, --config [configFile]", [
     "The path for the bundler config file. Defaults to \"meteor-client.config.json\".",
-    "For more information about the config file's schema, see the provided link below."
+    "For more information about the config file's schema, see the provided link below"
   ]. join("\n" + optionIndention))
 
   .action(function (options) {
