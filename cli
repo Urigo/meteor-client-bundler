@@ -20,7 +20,9 @@ Program
 
   .option("--src, --source [sourceDir]", [
     "A path for a Meteor project which already exists. This is useful if you want the",
-    "bundled packages to have the same versions as in the specified project"
+    "bundled packages to have the same versions as in the specified project. If not",
+    "specified, the default packages file will be used instead, which doesn't guarantee",
+    "that all our packages will be in the bundle, so beware"
   ]. join("\n" + optionIndention))
 
   .option("--dst, --destination [destinationFile]", [

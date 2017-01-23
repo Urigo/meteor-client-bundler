@@ -15,16 +15,13 @@ Tmp.setGracefulCleanup();
 
 function bundle(options) {
   var sourceDir = options.source &&
-    Path.resolve(options.source)
+    Path.resolve(options.source);
   var destinationFile = options.destination ?
     Path.resolve(options.destination) :
     Path.resolve(FindNodeModules()[0], "meteor-client.js");
   var configFile = options.config ?
     Path.resolve(options.config) :
     Path.resolve(__dirname, "meteor-client.config.json");
-
-  if (!sourceDir)
-    throw Error("Source dir must be provided");
 
   var config = require(configFile);
 
@@ -53,16 +50,11 @@ function bundle(options) {
   if (sourceDir) {
     var sourcePacksFile = Path.resolve(sourceDir, ".meteor/packages");
     var sourcePacksContent = Fs.readFileSync(sourcePacksFile).toString();
+    // The path to the packages file in the dummy Meteor project
+    var tempPacksFile = Path.resolve(tempDir, ".meteor/packages");
+    // Write the composed content to the temp packages file
+    Fs.writeFileSync(tempPacksFile, sourcePacksContent);
   }
-  // If not, create one based on the packages in the provided config
-  else {
-    var sourcePacksContent = packs.join("\n");
-  }
-
-  // The path to the packages file in the dummy Meteor project
-  var tempPacksFile = Path.resolve(tempDir, ".meteor/packages");
-  // Write the composed content to the temp packages file
-  Fs.writeFileSync(tempPacksFile, sourcePacksContent);
 
   // Install npm modules
   exec("npm", ["install"], {
@@ -95,6 +87,16 @@ function bundle(options) {
   packs.forEach(function (pack) {
     var packFileName = pack.replace(':', '_') + '.js';
     var packFile = Path.resolve(packsDir, packFileName);
+
+    try {
+      // Check if file exists
+      Fs.lstatSync(packFile);
+    }
+    catch (e) {
+      // If file doesn't exist, escape
+      return;
+    }
+
     var packContent = Fs.readFileSync(packFile) + "\n\n";
     Fs.appendFileSync(destinationFile, packContent);
   });
