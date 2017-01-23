@@ -1,0 +1,21 @@
+{
+  "name": "meteor-client-bundler",
+  "version": "0.0.1",
+  "description": "Bundles Meteor client-packages into a single module",
+  "author": "Eytan Manor",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Urigo/meteor-client-bundler.git"
+  },
+  "bin": {
+    "meteor-client": "cli"
+  },
+  "dependencies": {
+    "commander": "^2.9.0",
+    "tmp": "0.0.31"
+  },
+  "keywords": [
+    "meteor",
+    "client"
+  ]
+}
