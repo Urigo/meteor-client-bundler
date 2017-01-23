@@ -1,4 +1,5 @@
 var ChildProcess = require("child_process");
+var FindNodeModules = require("find-node-modules");
 var Fs = require("fs");
 var Path = require("path");
 var Tmp = require("tmp");
@@ -17,7 +18,7 @@ function bundle(options) {
     Path.resolve(options.source)
   var destinationFile = options.destination ?
     Path.resolve(options.destination) :
-    require.resolve("meteor-client.js");
+    Path.resolve(FindNodeModules()[0], "meteor-client.js");
   var configFile = options.config ?
     Path.resolve(options.config) :
     Path.resolve(__dirname, "meteor-client.config.json");
