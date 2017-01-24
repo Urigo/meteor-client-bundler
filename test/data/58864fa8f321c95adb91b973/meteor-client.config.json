@@ -4,69 +4,11 @@
     "DDP_DEFAULT_CONNECTION_URL": "http://localhost:3000"
   },
   "import": {
-    "meteor": [
-      "underscore",
-      "meteor",
-      "modules-runtime",
-      "modules",
-      "promise",
-      "babel-runtime",
-      "ecmascript-runtime",
-      "ecmascript",
-      "base64",
-      "ejson",
-      "jquery",
-      "check",
-      "random",
-      "tracker",
-      "retry",
-      "id-map",
-      "ordered-dict",
-      "geojson-utils",
-      "diff-sequence",
-      "mongo-id",
-      "minimongo",
-      "ddp-common",
-      "ddp-client",
-      "ddp",
-      "allow-deny",
-      "reactive-var",
-      "mongo"
-    ],
-    "accounts-base": [
-      "callback-hook",
-      "localstorage",
-      "accounts-base",
-      "service-configuration"
-    ],
-    "matb33:collection-hooks": [
-      "matb33:collection-hooks"
-    ],
-    "mys:accounts-phone": [
-      "sha",
-      "srp",
-      "mys:accounts-phone"
-    ],
-    "jalik:ufs": [
-      "observe-sequence",
-      "htmljs",
-      "blaze",
-      "spacebars",
-      "templating-runtime",
-      "templating",
-      "matb33:collection-hooks",
-      "jalik:ufs"
-    ],
-    "jalik:ufs-gridfs": [
-      "jalik:ufs-gridfs"
+    "underscore": [
+      "underscore"
     ]
   },
   "export": {
-    "accounts-base": ["Accounts"],
-    "ddp": ["DDP"],
-    "meteor": ["Meteor"],
-    "mongo": ["Mongo"],
-    "tracker": ["Tracker"],
     "underscore": ["_"]
   }
 }
