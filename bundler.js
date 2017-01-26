@@ -9,19 +9,21 @@ var Tmp = require("tmp");
  */
 
 var exec = ChildProcess.execFileSync.bind(ChildProcess);
+var cwd = process.cwd();
+var node_modules = FindNodeModules({ cwd: cwd, relative: false })[0];
 
 // Will clean all temp files automatically once process is destroyed
 Tmp.setGracefulCleanup();
 
 function bundle(options) {
   var sourceDir = options.source &&
-    Path.resolve(options.source);
+    Path.resolve(cwd, options.source);
   var destinationFile = options.destination ?
-    Path.resolve(options.destination) :
-    Path.resolve(FindNodeModules()[0], "meteor-client.js");
+    Path.resolve(cwd, options.destination) :
+    Path.resolve(node_modules, "meteor-client.js");
   var configFile = options.config ?
-    Path.resolve(options.config) :
-    Path.resolve(__dirname, "meteor-client.config.json");
+    Path.resolve(cwd, options.config) :
+    Path.resolve(cwd, "meteor-client.config.json");
 
   var config = require(configFile);
   var importedPackages = Object.keys(config["import"]);

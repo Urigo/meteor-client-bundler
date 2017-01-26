@@ -18,18 +18,18 @@ Program
   .command("bundle")
   .description("Bundles meteor-client")
 
-  .option("-src, --source [source-dir]", [
+  .option("-s, --source [source-dir]", [
     "A path for a Meteor project which already exists. This is useful if you want the",
     "bundled packages to have the same versions as in the specified project. If not",
     "specified, the packages specified in the config under the \"import\" field will be",
     "used instead"
   ]. join("\n" + optionIndention))
 
-  .option("-dst, --destination [destination-file]", [
+  .option("-d, --destination [destination-file]", [
     "The path for the bundled module. Defaults to \"node_modules/meteor-client.js\""
   ]. join("\n" + optionIndention))
 
-  .option("-cfg, --config [config-file]", [
+  .option("-c, --config [config-file]", [
     "The path for the bundler config file. Defaults to \"meteor-client.config.json\""
   ]. join("\n" + optionIndention))
 
