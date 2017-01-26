@@ -10,7 +10,7 @@
 
 ##### Options
 
-- **-src, --source [source-dir]** - A path for a Meteor project which already exists. This is useful if you want the bundled packages to have the same versions as in the specified project. If not specified, the default packages file will be used instead, which doesn't guarantee that all our packages will be in the bundle, so beware.
+- **-src, --source [source-dir]** - A path for a Meteor project which already exists. This is useful if you want the bundled packages to have the same versions as in the specified project. If not specified, the packages specified in the config under the `import` field will be used instead.
 - **-dst, --desination [destination-file]** - The path for the bundled module. Defaults to `node_modules/meteor-client.js`.
 - **-cfg, --config [config-file]** - The path for the bundler config file. Defaults to `meteor-client.config.json`. An example config can be found in the [examples section](#examples). The config can contain the following fields:
   - **run-time** - The JSON which will directly be inserted to `__meteor_runtime_config__`.
@@ -32,7 +32,7 @@
     "DDP_DEFAULT_CONNECTION_URL": "http://localhost:3000"
   },
   "import": {
-    "meteor": [
+    "meteor-base@1.0.4": [
       "underscore",
       "meteor",
       "modules-runtime",
@@ -61,6 +61,7 @@
       "reactive-var",
       "mongo"
     ],
+    npm-bcrypt: [],
     "accounts-base": [
       "callback-hook",
       "localstorage",

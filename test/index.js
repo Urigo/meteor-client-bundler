@@ -13,6 +13,7 @@ before(function () {
 
   // Utils
   this.exec = ChildProcess.execFileSync.bind(ChildProcess);
+  this.bundler = this.exec.bind(null, Path.resolve(__dirname, "../cli"));
   this.getDataDir = (id) => Path.resolve(__dirname, "data", id);
 
   // Initializations

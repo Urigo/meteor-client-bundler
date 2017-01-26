@@ -24,6 +24,8 @@ function bundle(options) {
     Path.resolve(__dirname, "meteor-client.config.json");
 
   var config = require(configFile);
+  var importedPackages = Object.keys(config["import"]);
+  var exportedPackages = Object.keys(config["export"]);
 
   // A temporary dir where the temporary Meteor project is gonna be created
   var tempDir = Tmp.dirSync({ unsafeCleanup: true }).name;
@@ -35,16 +37,16 @@ function bundle(options) {
     stdio: "inherit"
   });
 
-  // Eliminate duplicate packages names and preserve their order
-  var packs = Object.keys(config["import"]).reduce(function (packs, packsBatch) {
-    config["import"][packsBatch].forEach(function (pack) {
-      packs[pack] = true;
+  // Eliminate duplicate dependencies names and preserve their order
+  var dependencies = importedPackages.reduce(function (dependencies, pack) {
+    config["import"][pack].forEach(function (dependency) {
+      dependencies[dependency] = true;
     });
 
-    return packs;
+    return dependencies;
   }, {});
 
-  packs = Object.keys(packs);
+  dependencies = Object.keys(dependencies);
 
   // If a packages file was provided, use it in the dummy project
   if (sourceDir) {
@@ -55,9 +57,16 @@ function bundle(options) {
     // Write the composed content to the temp packages file
     Fs.writeFileSync(tempPacksFile, sourcePacksContent);
   }
+  // Compose packages file based on provided config
+  else {
+    exec("meteor", ["add"].concat(importedPackages), {
+      cwd: tempDir,
+      stdio: "inherit"
+    });
+  }
 
   // Install npm modules
-  exec("npm", ["install"], {
+  exec("meteor", ["npm", "install"], {
     cwd: tempDir,
     stdio: "inherit"
   });
@@ -84,8 +93,8 @@ function bundle(options) {
   Fs.writeFileSync(destinationFile, runtimeconfig);
 
   // Append all specified packages
-  packs.forEach(function (pack) {
-    var packFileName = pack.replace(':', '_') + '.js';
+  dependencies.forEach(function (dependency) {
+    var packFileName = dependency.replace(':', '_') + '.js';
     var packFile = Path.resolve(packsDir, packFileName);
 
     try {
@@ -101,11 +110,9 @@ function bundle(options) {
     Fs.appendFileSync(destinationFile, packContent);
   });
 
-  // Get all packages names we"d like to export
-  var packagesNames = Object.keys(config["export"]);
-  // Go through all packages names and compose an exportation line
+  // Go through all exported packages names and compose an exportation line
   // e.g. Accounts = Package["accounts-base"]["Accounts"];
-  var bundleExports = packagesNames.reduce(function (lines, packageName) {
+  var bundleExports = exportedPackages.reduce(function (lines, packageName) {
     var packageExports = config["export"][packageName];
 
     packageExports.forEach(function (objectName) {
