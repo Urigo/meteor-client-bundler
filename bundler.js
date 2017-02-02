@@ -1,4 +1,4 @@
-var ChildProcess = require("child_process");
+var Execa = require("execa");
 var FindNodeModules = require("find-node-modules");
 var Fs = require("fs");
 var Path = require("path");
@@ -8,7 +8,6 @@ var Tmp = require("tmp");
   Bundler's core logic
  */
 
-var exec = ChildProcess.execFileSync.bind(ChildProcess);
 var cwd = process.cwd();
 var node_modules = FindNodeModules({ cwd: cwd, relative: false })[0];
 
@@ -35,7 +34,7 @@ function bundle(options) {
   var packsDir = Path.resolve(tempDir, "bundle/programs/web.browser/packages");
 
   // Create a dummy Meteor project in temp dir
-  exec("meteor", ["create", tempDir], {
+  Execa.sync("meteor", ["create", tempDir], {
     stdio: "inherit"
   });
 
@@ -61,20 +60,20 @@ function bundle(options) {
   }
   // Compose packages file based on provided config
   else {
-    exec("meteor", ["add"].concat(importedPackages), {
+    Execa.sync("meteor", ["add"].concat(importedPackages), {
       cwd: tempDir,
       stdio: "inherit"
     });
   }
 
   // Install npm modules
-  exec("meteor", ["npm", "install"], {
+  Execa.sync("meteor", ["npm", "install"], {
     cwd: tempDir,
     stdio: "inherit"
   });
 
   // Start building the packages
-  exec("meteor", ["build", "--debug", "."], {
+  Execa.sync("meteor", ["build", "--debug", "."], {
     cwd: tempDir,
     stdio: "inherit"
   });
@@ -83,7 +82,7 @@ function bundle(options) {
   var tarFile = Path.resolve(tempDir, Path.basename(tempDir)) + ".tar.gz";
 
   // Extract tar so we can access the built project
-  exec("tar", ["-zxf", tarFile], {
+  Execa.sync("tar", ["-zxf", tarFile], {
     cwd: tempDir
   });
 

@@ -1,4 +1,4 @@
-const ChildProcess = require("child_process");
+const Execa = require("execa");
 const Fs = require("fs-extra");
 const Path = require("path");
 const Tmp = require("tmp");
@@ -12,12 +12,11 @@ before(function () {
   this.testDir = Tmp.dirSync({ unsafeCleanup: true }).name;
 
   // Utils
-  this.exec = ChildProcess.execFileSync.bind(ChildProcess);
-  this.bundler = this.exec.bind(null, Path.resolve(__dirname, "../cli"));
+  this.execBundler = Execa.sync.bind(null, Path.resolve(__dirname, "../cli"));
   this.getDataDir = (id) => Path.resolve(__dirname, "data", id);
 
   // Initializations
-  this.exec("meteor", ["create", this.plainProjectDir]);
+  Execa.sync("meteor", ["create", this.plainProjectDir]);
 });
 
 beforeEach(function () {

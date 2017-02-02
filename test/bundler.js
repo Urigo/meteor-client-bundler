@@ -15,7 +15,7 @@ describe("Bundler", function () {
       const destinationFile = Path.resolve(this.testDir, "meteor-client.bundle.js");
       const configFile = Path.resolve(dataDir, "meteor-client.config.json");
 
-      this.bundler(["bundle",
+      this.execBundler(["bundle",
         `--source=${sourceDir}`,
         `--destination=${destinationFile}`,
         `--config=${configFile}`
@@ -42,7 +42,7 @@ describe("Bundler", function () {
       const destinationFile = Path.resolve(this.testDir, "meteor-client.bundle.js");
       const configFile = Path.resolve(dataDir, "meteor-client.config.json");
 
-      this.bundler(["bundle",
+      this.execBundler(["bundle",
         `--destination=${destinationFile}`,
         `--config=${configFile}`
       ]);
