@@ -11,9 +11,6 @@ var Tmp = require("tmp");
 var cwd = process.cwd();
 var node_modules = FindNodeModules({ cwd: cwd, relative: false })[0];
 
-// Will clean all temp files automatically once process is destroyed
-Tmp.setGracefulCleanup();
-
 function bundle(options) {
   var sourceDir = options.source &&
     Path.resolve(cwd, options.source);

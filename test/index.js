@@ -4,9 +4,6 @@ const Path = require("path");
 const Tmp = require("tmp");
 
 before(function () {
-  // Setup
-  Tmp.setGracefulCleanup();
-
   // Constants
   this.plainProjectDir = Tmp.dirSync({ unsafeCleanup: true }).name;
   this.testDir = Tmp.dirSync({ unsafeCleanup: true }).name;
