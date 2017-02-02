@@ -70,17 +70,9 @@ function bundle(options) {
   });
 
   // Start building the packages
-  Execa.sync("meteor", ["build", "--debug", "."], {
+  Execa.sync("meteor", ["build", "--debug", "--directory", "."], {
     cwd: tempDir,
     stdio: "inherit"
-  });
-
-  // Unpack the built project
-  var tarFile = Path.resolve(tempDir, Path.basename(tempDir)) + ".tar.gz";
-
-  // Extract tar so we can access the built project
-  Execa.sync("tar", ["-zxf", tarFile], {
-    cwd: tempDir
   });
 
   // A necessary code snippet so the Meteor client can work properly
