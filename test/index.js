@@ -1,7 +1,11 @@
+const Chai = require("chai");
 const Execa = require("execa");
 const Fs = require("fs-extra");
 const Path = require("path");
 const Tmp = require("tmp");
+
+// Plug-ins
+Chai.use(require("chai-fs"));
 
 before(function () {
   // Constants

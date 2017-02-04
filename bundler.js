@@ -1,6 +1,8 @@
+var DefaultConfig = require("./default-config.json");
 var Execa = require("execa");
-var FindNodeModules = require("find-node-modules");
+var FindRoot = require("find-root");
 var Fs = require("fs");
+var Merge = require("merge");
 var Path = require("path");
 var Tmp = require("tmp");
 
@@ -9,7 +11,7 @@ var Tmp = require("tmp");
  */
 
 var cwd = process.cwd();
-var node_modules = FindNodeModules({ cwd: cwd, relative: false })[0];
+var node_modules = Path.resolve(FindRoot(cwd), "node_modules");
 
 function bundle(options) {
   var sourceDir = options.source &&
@@ -21,46 +23,30 @@ function bundle(options) {
     Path.resolve(cwd, options.config) :
     Path.resolve(cwd, "meteor-client.config.json");
 
-  var config = require(configFile);
-  var importedPackages = Object.keys(config["import"]);
-  var exportedPackages = Object.keys(config["export"]);
-
   // A temporary dir where the temporary Meteor project is gonna be created
   var tempDir = Tmp.dirSync({ unsafeCleanup: true }).name;
-  // Raw packages dir of the built Meteor project
-  var packsDir = Path.resolve(tempDir, "bundle/programs/web.browser/packages");
 
   // Create a dummy Meteor project in temp dir
   Execa.sync("meteor", ["create", tempDir], {
     stdio: "inherit"
   });
 
-  // Eliminate duplicate dependencies names and preserve their order
-  var dependencies = importedPackages.reduce(function (dependencies, pack) {
-    config["import"][pack].forEach(function (dependency) {
-      dependencies[dependency] = true;
-    });
-
-    return dependencies;
-  }, {});
-
-  dependencies = Object.keys(dependencies);
+  // Load config and apply its defaults
+  var config = Merge.recursive({}, DefaultConfig, require(configFile));
+  // The path to the packages file in the dummy Meteor project
+  var tempPacksFile = Path.resolve(tempDir, ".meteor/packages");
 
   // If a packages file was provided, use it in the dummy project
   if (sourceDir) {
     var sourcePacksFile = Path.resolve(sourceDir, ".meteor/packages");
     var sourcePacksContent = Fs.readFileSync(sourcePacksFile).toString();
-    // The path to the packages file in the dummy Meteor project
-    var tempPacksFile = Path.resolve(tempDir, ".meteor/packages");
     // Write the composed content to the temp packages file
     Fs.writeFileSync(tempPacksFile, sourcePacksContent);
   }
   // Compose packages file based on provided config
   else {
-    Execa.sync("meteor", ["add"].concat(importedPackages), {
-      cwd: tempDir,
-      stdio: "inherit"
-    });
+    var tempPacksContent = config["import"].join("\n");
+    Fs.writeFileSync(tempPacksFile, tempPacksContent);
   }
 
   // Install npm modules
@@ -77,48 +63,37 @@ function bundle(options) {
 
   // A necessary code snippet so the Meteor client can work properly
   var runtimeconfig = "__meteor_runtime_config__ = " +
-    JSON.stringify(config["run-time"], null, 2) + ";\n\n";
+    JSON.stringify(config["runtime"], null, 2) + ";\n\n";
+
+  // In case we bundle into node_modules, ensue its existence
+  if (!options.destination) {
+    try {
+      Fs.statSync(node_modules);
+    }
+    catch (e) {
+      Fs.mkdirSync(node_modules);
+    }
+  }
 
   // Start composing the bundle, override if already exists
   Fs.writeFileSync(destinationFile, runtimeconfig);
 
-  // Append all specified packages
-  dependencies.forEach(function (dependency) {
-    var packFileName = dependency.replace(':', '_') + '.js';
-    var packFile = Path.resolve(packsDir, packFileName);
+  // Load essential meta-data regards our packages
+  var buildPath = Path.resolve(tempDir, "bundle/programs/web.browser");
+  var program = require(Path.resolve(buildPath, "program.json"));
 
-    try {
-      // Check if file exists
-      Fs.lstatSync(packFile);
-    }
-    catch (e) {
-      // If file doesn't exist, escape
-      return;
-    }
-
-    var packContent = Fs.readFileSync(packFile) + "\n\n";
-    Fs.appendFileSync(destinationFile, packContent);
-  });
-
-  // Go through all exported packages names and compose an exportation line
-  // e.g. Accounts = Package["accounts-base"]["Accounts"];
-  var bundleExports = exportedPackages.reduce(function (lines, packageName) {
-    var packageExports = config["export"][packageName];
-
-    packageExports.forEach(function (objectName) {
-      lines.push(objectName +
-        " = Package[\"" + packageName + "\"][\"" + objectName + "\"]");
+  program.manifest
+    // Keep client's packages files
+    .filter(function (pack) {
+      return pack.where == "client" && pack.type == "js" &&
+             Path.dirname(pack.path) == "packages";
+    })
+    // Append each package to destination file
+    .forEach(function (pack) {
+      var packFile = Path.resolve(buildPath, pack.path);
+      var packContent = Fs.readFileSync(packFile).toString() + "\n\n";
+      Fs.appendFileSync(destinationFile, packContent);
     });
-
-    return lines;
-  }, [])
-    // Add an empty string so the next rule would apply on the last line as well
-    .concat("")
-    // Add a semi-colon and a line skip after each composed line
-    .join(";\n");
-
-  // Append export into bundle
-  Fs.appendFileSync(destinationFile, bundleExports);
 }
 
 module.exports = {

@@ -3,10 +3,6 @@ var Program = require("commander");
 var Bundler = require("./bundler");
 var Pack = require("./package.json");
 
-/*
-  Bundler CLI entry point
- */
-
 var optionIndention = Array(41).join(" ");
 var titleIndention = Array(3).join(" ");
 
