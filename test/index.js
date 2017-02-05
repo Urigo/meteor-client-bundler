@@ -4,9 +4,6 @@ const Fs = require("fs-extra");
 const Path = require("path");
 const Tmp = require("tmp");
 
-// Plug-ins
-Chai.use(require("chai-fs"));
-
 before(function () {
   // Constants
   this.plainProjectDir = Tmp.dirSync({ unsafeCleanup: true }).name;

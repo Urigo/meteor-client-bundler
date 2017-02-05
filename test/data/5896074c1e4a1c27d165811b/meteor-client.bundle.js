@@ -6251,70 +6251,70 @@ exports.main = "./index.js";                                                    
 /* eslint prefer-spread:0, no-var:0, prefer-reflect:0, no-magic-numbers:0 */                                  // 2
 'use strict'                                                                                                  // 3
 module.exports = (function () {                                                                               // 4
-  // Import Events                                                                                             // 5
-  var events = require('events')                                                                               // 6
+	// Import Events                                                                                             // 5
+	var events = require('events')                                                                               // 6
                                                                                                               // 7
-  // Export Domain                                                                                             // 8
-  var domain = {}                                                                                              // 9
-  domain.createDomain = domain.create = function () {                                                          // 10
-    var d = new events.EventEmitter()                                                                           // 11
+	// Export Domain                                                                                             // 8
+	var domain = {}                                                                                              // 9
+	domain.createDomain = domain.create = function () {                                                          // 10
+		var d = new events.EventEmitter()                                                                           // 11
                                                                                                               // 12
-    function emitError (e) {                                                                                    // 13
-      d.emit('error', e)                                                                                         // 14
-    }                                                                                                           // 15
+		function emitError (e) {                                                                                    // 13
+			d.emit('error', e)                                                                                         // 14
+		}                                                                                                           // 15
                                                                                                               // 16
-    d.add = function (emitter) {                                                                                // 17
-      emitter.on('error', emitError)                                                                             // 18
-    }                                                                                                           // 19
-    d.remove = function (emitter) {                                                                             // 20
-      emitter.removeListener('error', emitError)                                                                 // 21
-    }                                                                                                           // 22
-    d.bind = function (fn) {                                                                                    // 23
-      return function () {                                                                                       // 24
-        var args = Array.prototype.slice.call(arguments)                                                          // 25
-        try {                                                                                                     // 26
-          fn.apply(null, args)                                                                                     // 27
-        }                                                                                                         // 28
-        catch (err) {                                                                                             // 29
-          emitError(err)                                                                                           // 30
-        }                                                                                                         // 31
-      }                                                                                                          // 32
-    }                                                                                                           // 33
-    d.intercept = function (fn) {                                                                               // 34
-      return function (err) {                                                                                    // 35
-        if ( err ) {                                                                                              // 36
-          emitError(err)                                                                                           // 37
-        }                                                                                                         // 38
-        else {                                                                                                    // 39
-          var args = Array.prototype.slice.call(arguments, 1)                                                      // 40
-          try {                                                                                                    // 41
-            fn.apply(null, args)                                                                                    // 42
-          }                                                                                                        // 43
-          catch (err) {                                                                                            // 44
-            emitError(err)                                                                                          // 45
-          }                                                                                                        // 46
-        }                                                                                                         // 47
-      }                                                                                                          // 48
-    }                                                                                                           // 49
-    d.run = function (fn) {                                                                                     // 50
-      try {                                                                                                      // 51
-        fn()                                                                                                      // 52
-      }                                                                                                          // 53
-      catch (err) {                                                                                              // 54
-        emitError(err)                                                                                            // 55
-      }                                                                                                          // 56
-      return this                                                                                                // 57
-    }                                                                                                           // 58
-    d.dispose = function () {                                                                                   // 59
-      this.removeAllListeners()                                                                                  // 60
-      return this                                                                                                // 61
-    }                                                                                                           // 62
-    d.enter = d.exit = function () {                                                                            // 63
-      return this                                                                                                // 64
-    }                                                                                                           // 65
-    return d                                                                                                    // 66
-  }                                                                                                            // 67
-  return domain                                                                                                // 68
+		d.add = function (emitter) {                                                                                // 17
+			emitter.on('error', emitError)                                                                             // 18
+		}                                                                                                           // 19
+		d.remove = function (emitter) {                                                                             // 20
+			emitter.removeListener('error', emitError)                                                                 // 21
+		}                                                                                                           // 22
+		d.bind = function (fn) {                                                                                    // 23
+			return function () {                                                                                       // 24
+				var args = Array.prototype.slice.call(arguments)                                                          // 25
+				try {                                                                                                     // 26
+					fn.apply(null, args)                                                                                     // 27
+				}                                                                                                         // 28
+				catch (err) {                                                                                             // 29
+					emitError(err)                                                                                           // 30
+				}                                                                                                         // 31
+			}                                                                                                          // 32
+		}                                                                                                           // 33
+		d.intercept = function (fn) {                                                                               // 34
+			return function (err) {                                                                                    // 35
+				if ( err ) {                                                                                              // 36
+					emitError(err)                                                                                           // 37
+				}                                                                                                         // 38
+				else {                                                                                                    // 39
+					var args = Array.prototype.slice.call(arguments, 1)                                                      // 40
+					try {                                                                                                    // 41
+						fn.apply(null, args)                                                                                    // 42
+					}                                                                                                        // 43
+					catch (err) {                                                                                            // 44
+						emitError(err)                                                                                          // 45
+					}                                                                                                        // 46
+				}                                                                                                         // 47
+			}                                                                                                          // 48
+		}                                                                                                           // 49
+		d.run = function (fn) {                                                                                     // 50
+			try {                                                                                                      // 51
+				fn()                                                                                                      // 52
+			}                                                                                                          // 53
+			catch (err) {                                                                                              // 54
+				emitError(err)                                                                                            // 55
+			}                                                                                                          // 56
+			return this                                                                                                // 57
+		}                                                                                                           // 58
+		d.dispose = function () {                                                                                   // 59
+			this.removeAllListeners()                                                                                  // 60
+			return this                                                                                                // 61
+		}                                                                                                           // 62
+		d.enter = d.exit = function () {                                                                            // 63
+			return this                                                                                                // 64
+		}                                                                                                           // 65
+		return d                                                                                                    // 66
+	}                                                                                                            // 67
+	return domain                                                                                                // 68
 }).call(this)                                                                                                 // 69
                                                                                                               // 70
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -17415,12 +17415,12 @@ utils.amendUrl = function(url, relativeTo) {                                    
                                                                                                                   // 356
     // We have a full url here, with proto and host. For some browsers                                            // 357
     // http://localhost:80/ is not in the same origin as http://localhost/                                        // 358
-  // Remove explicit :80 or :443 in such cases. See #74                                                            // 359
+	// Remove explicit :80 or :443 in such cases. See #74                                                            // 359
     var parts = url.split("/");                                                                                   // 360
     if ((parts[0] === "http:" && /:80$/.test(parts[2])) ||                                                        // 361
-      (parts[0] === "https:" && /:443$/.test(parts[2]))) {                                                         // 362
-    parts[2] = parts[2].replace(/:(80|443)$/, "");                                                                  // 363
-  }                                                                                                                // 364
+	    (parts[0] === "https:" && /:443$/.test(parts[2]))) {                                                         // 362
+		parts[2] = parts[2].replace(/:(80|443)$/, "");                                                                  // 363
+	}                                                                                                                // 364
     url = parts.join("/");                                                                                        // 365
     return url;                                                                                                   // 366
 };                                                                                                                // 367
@@ -20578,7 +20578,7 @@ _.extend(Connection.prototype, {                                                
     var store = {};                                                                                               // 496
     _.each(['update', 'beginUpdate', 'endUpdate', 'saveOriginals',                                                // 497
             'retrieveOriginals', 'getDoc',                                                                        // 498
-      '_getCollection'], function (method) {                                                                         // 499
+			'_getCollection'], function (method) {                                                                         // 499
               store[method] = function () {                                                                       // 500
                 return (wrappedStore[method]                                                                      // 501
                         ? wrappedStore[method].apply(wrappedStore, arguments)                                     // 502
@@ -22606,7 +22606,7 @@ exports.GeoJSON = require("./geojson-utils.js");                                
   },                                                                                                       // 247
                                                                                                            // 248
   gju.simplify = function (source, kink) { /* source[] array of geojson points */                          // 249
-    /* kink in metres, kinks above this depth kept  */                                                     // 250
+    /* kink	in metres, kinks above this depth kept  */                                                     // 250
     /* kink depth is the height of the triangle abc where a-b and b-c are two consecutive line segments */
     kink = kink || 20;                                                                                     // 252
     source = source.map(function (o) {                                                                     // 253

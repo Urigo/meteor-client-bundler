@@ -1,4 +1,5 @@
 const Chai = require("chai");
+const Fs = require("fs");
 const Path = require("path");
 
 const expect = Chai.expect;
@@ -6,7 +7,7 @@ const expect = Chai.expect;
 describe("Bundler", function () {
   describe("bundle()", function () {
     it("should take all the packages in source, bundle them by config, and write the " +
-            "bundle to destination", function (done) {
+            "bundle to destination", function () {
       this.slow(80 * 1000);
 
       const dataDir = this.getDataDir("58864fa8f321c95adb91b973");
@@ -21,7 +22,10 @@ describe("Bundler", function () {
       ]);
 
       const expectedBundleFile = Path.resolve(dataDir, "meteor-client.bundle.js");
-      expect(destinationFile).to.be.a.file().and.equal(expectedBundleFile);
+      const actualBundleBuffer = Fs.readFileSync(destinationFile);
+      const expectedBundleBuffer = Fs.readFileSync(expectedBundleFile);
+
+      expect(actualBundleBuffer).to.deep.equal(expectedBundleBuffer);
     });
 
     it("should use packages specified in the config if no source was " +
