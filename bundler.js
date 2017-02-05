@@ -31,8 +31,21 @@ function bundle(options) {
     stdio: "inherit"
   });
 
-  // Load config and apply its defaults
-  var config = Merge.recursive({}, DefaultConfig, require(configFile));
+  try {
+    var userConfig = require(configFile);
+  }
+  catch (e) {
+    // Defaults to an empty object if file not found
+    var userConfig = {};
+  }
+
+  // Config composed from CLI args
+  var cliConfig = { runtime: {} };
+  if (options.url) cliConfig.runtime.DDP_DEFAULT_CONNECTION_URL = options.url;
+
+  // Compose complete config
+  var config = Merge.recursive({}, DefaultConfig, userConfig, cliConfig);
+
   // The path to the packages file in the dummy Meteor project
   var tempPacksFile = Path.resolve(tempDir, ".meteor/packages");
 

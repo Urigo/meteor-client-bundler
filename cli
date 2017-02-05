@@ -19,15 +19,19 @@ Program
     "bundled packages to have the same versions as in the specified project. If not",
     "specified, the packages specified in the config under the \"import\" field will be",
     "used instead"
-  ]. join("\n" + optionIndention))
+  ].join("\n" + optionIndention))
 
   .option("-d, --destination [destination-file]", [
     "The path for the bundled module. Defaults to \"node_modules/meteor-client.js\""
-  ]. join("\n" + optionIndention))
+  ].join("\n" + optionIndention))
 
   .option("-c, --config [config-file]", [
     "The path for the bundler config file. Defaults to \"meteor-client.config.json\""
-  ]. join("\n" + optionIndention))
+  ].join("\n" + optionIndention))
+
+  .option("--url [connection-url]", [
+    "DDP default connection URL"
+  ])
 
   .action(function (options) {
     Bundler.bundle(options);
