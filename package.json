@@ -1,6 +1,6 @@
 {
   "name": "meteor-client-bundler",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Bundles Meteor client-packages into a single module",
   "author": "Eytan Manor",
   "repository": {
