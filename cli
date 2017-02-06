@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 var Program = require("commander");
-var Bundler = require("./bundler");
+var Bundler = require("./lib/bundler");
 var Pack = require("./package.json");
 
 var optionIndention = Array(41).join(" ");
