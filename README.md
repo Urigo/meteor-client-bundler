@@ -15,7 +15,8 @@
 - **-c, --config [config-file]** - The path for the bundler config file. Defaults to `meteor-client.config.json`. An example config can be found in the [examples section](#examples). The config can contain the following fields:
   - **runtime** - Meteor’s runtime config. Most commonly used to set the URL of the Meteor server we would like to interface with, which defaults to `localhost:3000`.
   - **import** - A list of packages we would like to include in our bundle. Will most likely contain the `meteor-base` package, as it’s the core file of Meteor’s client, and without it, there will be no Meteor whatsoever.
-- **--url** - DDP default connection URL.
+- **--url** - DDP connection URL. Defaults to `localhost:3000`.
+- **--mock-browser** - Mocks a browser environment. This is useful when using a framework which is not meant to run on a browser, like `React-Native`, but still, we want to use Meteor, which is dependent on the browser.
 
 ## Examples
 

@@ -30,8 +30,14 @@ Program
   ].join("\n" + optionIndention))
 
   .option("--url [connection-url]", [
-    "DDP default connection URL"
-  ])
+    "DDP connection URL. Defaults to \"localhost:3000\""
+  ].join("\n" + optionIndention))
+
+  .option("--mock-browser", [
+    "Mocks a browser environment. This is useful when using a framework which is not",
+    "meant to run on a browser, like React-Native, but still, we want to use Meteor,",
+    "which is dependent on the browser"
+  ].join("\n" + optionIndention))
 
   .action(function (options) {
     Bundler.bundle(options);
