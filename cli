@@ -33,6 +33,10 @@ Program
     "DDP default connection URL"
   ])
 
+  .options("--packs-dir [packages-dir]", [
+    "Export METEOR_PACKAGE_DIRS"
+  ])
+
   .action(function (options) {
     Bundler.bundle(options);
   });

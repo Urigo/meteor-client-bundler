@@ -16,6 +16,7 @@
   - **runtime** - Meteor’s runtime config. Most commonly used to set the URL of the Meteor server we would like to interface with, which defaults to `localhost:3000`.
   - **import** - A list of packages we would like to include in our bundle. Will most likely contain the `meteor-base` package, as it’s the core file of Meteor’s client, and without it, there will be no Meteor whatsoever.
 - **--url** - DDP default connection URL.
+- **--packs-dir** - Export `METEOR_PACKAGE_DIRS`. For more information, see [reference](https://docs.meteor.com/environment-variables.html#METEOR-PACKAGE-DIRS).
 
 ## Examples
 
