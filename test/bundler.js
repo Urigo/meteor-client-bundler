@@ -66,5 +66,26 @@ describe("Bundler", function () {
 
       expect(actualBundleBuffer).to.deep.equal(expectedBundleBuffer);
     });
+
+    it("should use specified meteor packages directory", function () {
+      this.slow(80 * 1000);
+
+      const dataDir = this.getDataDir("58f5b6eee2cc39c0a2e7aa4e");
+      const destinationFile = Path.resolve(this.testDir, "meteor-client.bundle.js");
+      const packsDir = Path.resolve(dataDir, "packages");
+
+      this.execBundler(["bundle",
+        `--destination=${destinationFile}`,
+        `--packs-dir=${packsDir}`
+      ]);
+
+      const expectedBundleFile = Path.resolve(dataDir, "meteor-client.bundle.js");
+      const actualBundleBuffer = Fs.readFileSync(destinationFile);
+      const expectedBundleBuffer = Fs.readFileSync(expectedBundleFile);
+
+      Fs.writeFileSync(expectedBundleFile, actualBundleBuffer);
+
+      expect(actualBundleBuffer).to.deep.equal(expectedBundleBuffer);
+    });
   });
 });
