@@ -14,6 +14,7 @@
     "test": "make test"
   },
   "dependencies": {
+    "babel-core": "^6.24.0",
     "commander": "^2.9.0",
     "execa": "^0.6.0",
     "find-root": "^1.0.0",
