@@ -2,13 +2,11 @@
 
 `meteor-client-bundler` is a module bundler which will take a bunch of Atmosphere package and put them into a single module, so we can load Meteor's client scripts regardless of what framework we're using to run our server. This project was originally created due to [Ionic2CLI-Meteor-Whatsapp](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp) and the urge to combine both Ionic along with Meteor, so we can enjoy Ionic's great client and Meteor's powerful DDP client.
 
-## API
+### API
 
-### Bundling
+#### Bundling
 
     $ meteor-client bundle
-
-#### Options
 
 - **-s, --source [source-dir]** - A path for a Meteor project which already exists. This is useful if you want the bundled packages to have the same versions as in the specified project. If not specified, the packages specified in the config under the `import` field will be used instead.
 - **-d, --desination [destination-file]** - The path for the bundled module. Defaults to `node_modules/meteor-client.js`.
@@ -18,13 +16,13 @@
 - **--url** - DDP default connection URL.
 - **--packs-dir** - Export `METEOR_PACKAGE_DIRS`. Defaults to the `packages` directory under the root directory of the project. For more information, see [reference](https://docs.meteor.com/environment-variables.html#METEOR-PACKAGE-DIRS).
 
-## Examples
+### Example
 
-### Bundling
+#### Command
 
     $ meteor-client bundle --destination meteor.bundle.js --config bundler.config.json
 
-### Config
+#### Config
 
 ```json
 {
@@ -40,6 +38,10 @@
 }
 ```
 
-## License
+#### Integrating With React Native
+
+See [React Native Meteor Boilerplate](https://github.com/DAB0mB/ReactNativeMeteorBoilerplate).
+
+### License
 
 MIT
