@@ -31,11 +31,12 @@ Program
 
   .option("--url [connection-url]", [
     "DDP default connection URL"
-  ])
+  ].join("\n" + optionIndention))
 
-  .options("--packs-dir [packages-dir]", [
-    "Export METEOR_PACKAGE_DIRS"
-  ])
+  .option("--packs-dir [packages-dir]", [
+    "Export METEOR_PACKAGE_DIRS. Defaults to the `packages` directory under the root",
+    "directory of the project"
+  ].join("\n" + optionIndention))
 
   .action(function (options) {
     Bundler.bundle(options);
