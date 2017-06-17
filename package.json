@@ -16,14 +16,14 @@
   "dependencies": {
     "babel-core": "^6.24.0",
     "commander": "^2.9.0",
-    "execa": "^0.6.0",
+    "execa": "^0.7.0",
     "find-root": "^1.0.0",
     "merge": "^1.2.0",
     "tmp": "0.0.31"
   },
   "devDependencies": {
-    "chai": "^3.5.0",
-    "fs-extra": "^2.0.0",
+    "chai": "^4.0.2",
+    "fs-extra": "^3.0.1",
     "mocha": "^3.2.0",
     "rimraf": "^2.5.4"
   },
