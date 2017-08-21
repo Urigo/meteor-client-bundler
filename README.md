@@ -13,6 +13,7 @@
 - **-c, --config [config-file]** - The path for the bundler config file. Defaults to `meteor-client.config.json`. An example config can be found in the [examples section](#examples). The config can contain the following fields:
   - **runtime** - Meteor’s runtime config. Most commonly used to set the URL of the Meteor server we would like to interface with, which defaults to `localhost:3000`.
   - **import** - A list of packages we would like to include in our bundle. Will most likely contain the `meteor-base` package, as it’s the core file of Meteor’s client, and without it, there will be no Meteor whatsoever.
+- **-r, --release [meteor-release]** - Define which Meteor release to use. Default is to download most recent stable version.
 - **--url** - DDP default connection URL.
 - **--packs-dir** - Export `METEOR_PACKAGE_DIRS`. Defaults to the `packages` directory under the root directory of the project. For more information, see [reference](https://docs.meteor.com/environment-variables.html#METEOR-PACKAGE-DIRS).
 
