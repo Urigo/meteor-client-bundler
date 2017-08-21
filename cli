@@ -29,6 +29,10 @@ Program
     "The path for the bundler config file. Defaults to \"meteor-client.config.json\""
   ].join("\n" + optionIndention))
 
+  .option("-r, --release [meteor-release]", [
+    "Define which Meteor release to use. Default is to download most recent stable version."
+  ].join("\n" + optionIndention))
+
   .option("--url [connection-url]", [
     "DDP default connection URL"
   ].join("\n" + optionIndention))
@@ -42,7 +46,7 @@ Program
     Bundler.bundle(options);
   });
 
-Program.on("--help", function (){
+Program.on("--help", function () {
   console.log(titleIndention + "For more information, see: " + Pack.repository.url);
   console.log();
 });
