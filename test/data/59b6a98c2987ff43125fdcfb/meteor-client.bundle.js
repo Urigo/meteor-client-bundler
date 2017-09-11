@@ -1,6 +1,6 @@
 __meteor_runtime_config__ = {
   "meteorEnv": {},
-  "DDP_DEFAULT_CONNECTION_URL": "http://1.0.0.127:8100"
+  "DDP_DEFAULT_CONNECTION_URL": "http://localhost:3000"
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -15363,12 +15363,12 @@ __meteor_runtime_config__ = {
 
                 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 //                                                                                                                  //
-                // ../../.0.9.0.16wg4z0++os+web.browser+web.cordova/npm/node_modules/meteor-promise/package.json                    //
+                // ../../.0.10.0-beta.26.9jyc6q.ftfvk++os+web.browser+web.cordova/npm/node_modules/meteor-promise/package.json      //
                 //                                                                                                                  //
                 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 //
                 _exports4.name = "meteor-promise"; // 1
-                _exports4.version = "0.8.5"; // 2
+                _exports4.version = "0.8.6"; // 2
                 _exports4.browser = "promise_client.js"; // 3
                 _exports4.main = "promise_server.js"; // 4
                 // 5
@@ -16006,7 +16006,7 @@ __meteor_runtime_config__ = {
 
                 ////////////////////////////////////////////////////////////////////////////////
                 //                                                                            //
-                // ../../.1.0.1.jgdus0++os+web.browser+web.cordova/npm/node_modules/meteor-ba //
+                // ../../.1.1.0-beta.26.t1ti2l.blrrh++os+web.browser+web.cordova/npm/node_mod //
                 //                                                                            //
                 ////////////////////////////////////////////////////////////////////////////////
                 //
@@ -29901,56 +29901,97 @@ __meteor_runtime_config__ = {
                 } // 73
                 //
                 return fetch; //
-              }(); /**                                                                                                             //
-                    * @callback IterationCallback                                                                                  //
-                    * @param {Object} doc                                                                                          //
-                    * @param {Number} index                                                                                        //
-                    */ /**                                                                                                         //
-                        * @summary Call `callback` once for each matching document, sequentially and                               //
-                        *          synchronously.                                                                                  //
-                        * @locus Anywhere                                                                                          //
-                        * @method  forEach                                                                                         //
-                        * @instance                                                                                                //
-                        * @memberOf Mongo.Cursor                                                                                   //
-                        * @param {IterationCallback} callback Function to call. It will be called                                  //
-                        *                                     with three arguments: the document, a                                //
-                        *                                     0-based index, and <em>cursor</em>                                   //
-                        *                                     itself.                                                              //
-                        * @param {Any} [thisArg] An object which will be the value of `this` inside                                //
-                        *                        `callback`.                                                                       //
-                        */ //
+              }(); //
+              //
+              Cursor.prototype[Symbol.iterator] = function () {
+                //
+                var _this = this; // 75
+                //
+                if (this.reactive) {
+                  // 76
+                  this._depend({ // 77
+                    addedBefore: true, // 78
+                    removed: true, // 79
+                    changed: true, // 80
+                    movedBefore: true // 81
+                  }); // 77
+                } // 82
+                //
+                var index = 0; // 84
+                //
+                var objects = this._getRawObjects({ // 85
+                  ordered: true // 85
+                }); // 85
+                //
+                return { // 87
+                  next: function () {
+                    // 88
+                    if (index < objects.length) {
+                      // 89
+                      // This doubles as a clone operation.                                                                        // 90
+                      var element = _this._projectionFn(objects[index++]); // 91
+                      //
+                      if (_this._transform) element = _this._transform(element); // 93
+                      return { // 96
+                        value: element // 96
+                      }; // 96
+                    } // 97
+                    //
+                    return { // 99
+                      done: true // 99
+                    }; // 99
+                  } // 100
+                }; // 87
+              }; /**                                                                                                               // 102
+                  * @callback IterationCallback                                                                                    //
+                  * @param {Object} doc                                                                                            //
+                  * @param {Number} index                                                                                          //
+                  */ /**                                                                                                           //
+                      * @summary Call `callback` once for each matching document, sequentially and                                 //
+                      *          synchronously.                                                                                    //
+                      * @locus Anywhere                                                                                            //
+                      * @method  forEach                                                                                           //
+                      * @instance                                                                                                  //
+                      * @memberOf Mongo.Cursor                                                                                     //
+                      * @param {IterationCallback} callback Function to call. It will be called                                    //
+                      *                                     with three arguments: the document, a                                  //
+                      *                                     0-based index, and <em>cursor</em>                                     //
+                      *                                     itself.                                                                //
+                      * @param {Any} [thisArg] An object which will be the value of `this` inside                                  //
+                      *                        `callback`.                                                                         //
+                      */ //
               //
               Cursor.prototype.forEach = function () {
                 //
                 function forEach(callback, thisArg) {
                   //
-                  var _this = this; // 94
+                  var _this2 = this; // 123
                   //
                   if (this.reactive) {
-                    // 95
-                    this._depend({ // 96
-                      addedBefore: true, // 97
-                      removed: true, // 98
-                      changed: true, // 99
-                      movedBefore: true // 100
-                    }); // 96
-                  } // 101
+                    // 124
+                    this._depend({ // 125
+                      addedBefore: true, // 126
+                      removed: true, // 127
+                      changed: true, // 128
+                      movedBefore: true // 129
+                    }); // 125
+                  } // 130
                   //
-                  this._getRawObjects({ // 103
-                    ordered: true // 103
+                  this._getRawObjects({ // 132
+                    ordered: true // 132
                   }).forEach(function (element, i) {
-                    // 103
-                    // This doubles as a clone operation.                                                                          // 104
-                    element = _this._projectionFn(element); // 105
+                    // 132
+                    // This doubles as a clone operation.                                                                          // 133
+                    element = _this2._projectionFn(element); // 134
                     //
-                    if (_this._transform) {
-                      // 107
-                      element = _this._transform(element); // 108
-                    } // 109
+                    if (_this2._transform) {
+                      // 136
+                      element = _this2._transform(element); // 137
+                    } // 138
                     //
-                    callback.call(thisArg, element, i, _this); // 111
-                  }); // 112
-                } // 113
+                    callback.call(thisArg, element, i, _this2); // 140
+                  }); // 141
+                } // 142
                 //
                 return forEach; //
               }(); //
@@ -29959,8 +30000,8 @@ __meteor_runtime_config__ = {
                 //
                 function getTransform() {
                   //
-                  return this._transform; // 116
-                } // 117
+                  return this._transform; // 145
+                } // 146
                 //
                 return getTransform; //
               }(); /**                                                                                                             //
@@ -29981,38 +30022,38 @@ __meteor_runtime_config__ = {
                 //
                 function map(callback, thisArg) {
                   //
-                  var _this2 = this; // 132
+                  var _this3 = this; // 161
                   //
-                  var result = []; // 133
+                  var result = []; // 162
                   this.forEach(function (doc, i) {
-                    // 135
-                    result.push(callback.call(thisArg, doc, i, _this2)); // 136
-                  }); // 137
-                  return result; // 139
-                } // 140
+                    // 164
+                    result.push(callback.call(thisArg, doc, i, _this3)); // 165
+                  }); // 166
+                  return result; // 168
+                } // 169
                 //
                 return map; //
               }(); // options to contain:                                                                                          //
-              //  * callbacks for observe():                                                                                       // 143
-              //    - addedAt (document, atIndex)                                                                                  // 144
-              //    - added (document)                                                                                             // 145
-              //    - changedAt (newDocument, oldDocument, atIndex)                                                                // 146
-              //    - changed (newDocument, oldDocument)                                                                           // 147
-              //    - removedAt (document, atIndex)                                                                                // 148
-              //    - removed (document)                                                                                           // 149
-              //    - movedTo (document, oldIndex, newIndex)                                                                       // 150
-              //                                                                                                                   // 151
-              // attributes available on returned query handle:                                                                    // 152
-              //  * stop(): end updates                                                                                            // 153
-              //  * collection: the collection this query is querying                                                              // 154
-              //                                                                                                                   // 155
-              // iff x is a returned query handle, (x instanceof                                                                   // 156
-              // LocalCollection.ObserveHandle) is true                                                                            // 157
-              //                                                                                                                   // 158
-              // initial results delivered through added callback                                                                  // 159
-              // XXX maybe callbacks should take a list of objects, to expose transactions?                                        // 160
-              // XXX maybe support field limiting (to limit what you're notified on)                                               // 161
-              /**                                                                                                                  // 163
+              //  * callbacks for observe():                                                                                       // 172
+              //    - addedAt (document, atIndex)                                                                                  // 173
+              //    - added (document)                                                                                             // 174
+              //    - changedAt (newDocument, oldDocument, atIndex)                                                                // 175
+              //    - changed (newDocument, oldDocument)                                                                           // 176
+              //    - removedAt (document, atIndex)                                                                                // 177
+              //    - removed (document)                                                                                           // 178
+              //    - movedTo (document, oldIndex, newIndex)                                                                       // 179
+              //                                                                                                                   // 180
+              // attributes available on returned query handle:                                                                    // 181
+              //  * stop(): end updates                                                                                            // 182
+              //  * collection: the collection this query is querying                                                              // 183
+              //                                                                                                                   // 184
+              // iff x is a returned query handle, (x instanceof                                                                   // 185
+              // LocalCollection.ObserveHandle) is true                                                                            // 186
+              //                                                                                                                   // 187
+              // initial results delivered through added callback                                                                  // 188
+              // XXX maybe callbacks should take a list of objects, to expose transactions?                                        // 189
+              // XXX maybe support field limiting (to limit what you're notified on)                                               // 190
+              /**                                                                                                                  // 192
                * @summary Watch a query.  Receive callbacks as the result set changes.                                             //
                * @locus Anywhere                                                                                                   //
                * @memberOf Mongo.Cursor                                                                                            //
@@ -30025,8 +30066,8 @@ __meteor_runtime_config__ = {
                 //
                 function observe(options) {
                   //
-                  return LocalCollection._observeFromObserveChanges(this, options); // 172
-                } // 173
+                  return LocalCollection._observeFromObserveChanges(this, options); // 201
+                } // 202
                 //
                 return observe; //
               }(); /**                                                                                                             //
@@ -30044,151 +30085,151 @@ __meteor_runtime_config__ = {
                 //
                 function observeChanges(options) {
                   //
-                  var _this3 = this; // 185
+                  var _this4 = this; // 214
                   //
                   var ordered = LocalCollection._observeChangesCallbacksAreOrdered(options); // there are several places that assume you aren't combining skip/limit with
-                  // unordered observe.  eg, update's EJSON.clone, and the "there are several"                                     // 189
-                  // comment in _modifyAndNotify                                                                                   // 190
-                  // XXX allow skip/limit with unordered observe                                                                   // 191
+                  // unordered observe.  eg, update's EJSON.clone, and the "there are several"                                     // 218
+                  // comment in _modifyAndNotify                                                                                   // 219
+                  // XXX allow skip/limit with unordered observe                                                                   // 220
                   //
                   //
                   if (!options._allow_unordered && !ordered && (this.skip || this.limit)) {
-                    // 192
+                    // 221
                     throw new Error('must use ordered observe (ie, \'addedBefore\' instead of \'added\') ' + 'with skip or limit');
-                  } // 197
+                  } // 226
                   //
                   if (this.fields && (this.fields._id === 0 || this.fields._id === false)) {
-                    // 199
-                    throw Error('You may not observe a cursor with {fields: {_id: 0}}'); // 200
-                  } // 201
+                    // 228
+                    throw Error('You may not observe a cursor with {fields: {_id: 0}}'); // 229
+                  } // 230
                   //
-                  var distances = this.matcher.hasGeoQuery() && ordered && new LocalCollection._IdMap(); // 203
-                  var query = { // 209
-                    cursor: this, // 210
-                    dirty: false, // 211
-                    distances: distances, // 212
-                    matcher: this.matcher, // 213
-                    // not fast pathed                                                                                             // 213
-                    ordered: ordered, // 214
-                    projectionFn: this._projectionFn, // 215
-                    resultsSnapshot: null, // 216
-                    sorter: ordered && this.sorter // 217
-                  }; // 209
-                  var qid = void 0; // Non-reactive queries call added[Before] and then never call anything                        // 220
-                  // else.                                                                                                         // 223
+                  var distances = this.matcher.hasGeoQuery() && ordered && new LocalCollection._IdMap(); // 232
+                  var query = { // 238
+                    cursor: this, // 239
+                    dirty: false, // 240
+                    distances: distances, // 241
+                    matcher: this.matcher, // 242
+                    // not fast pathed                                                                                             // 242
+                    ordered: ordered, // 243
+                    projectionFn: this._projectionFn, // 244
+                    resultsSnapshot: null, // 245
+                    sorter: ordered && this.sorter // 246
+                  }; // 238
+                  var qid = void 0; // Non-reactive queries call added[Before] and then never call anything                        // 249
+                  // else.                                                                                                         // 252
                   //
                   if (this.reactive) {
-                    // 224
-                    qid = this.collection.next_qid++; // 225
-                    this.collection.queries[qid] = query; // 226
-                  } // 227
+                    // 253
+                    qid = this.collection.next_qid++; // 254
+                    this.collection.queries[qid] = query; // 255
+                  } // 256
                   //
-                  query.results = this._getRawObjects({ // 229
-                    ordered: ordered, // 229
-                    distances: query.distances // 229
-                  }); // 229
+                  query.results = this._getRawObjects({ // 258
+                    ordered: ordered, // 258
+                    distances: query.distances // 258
+                  }); // 258
                   //
                   if (this.collection.paused) {
-                    // 231
-                    query.resultsSnapshot = ordered ? [] : new LocalCollection._IdMap(); // 232
-                  } // wrap callbacks we were passed. callbacks only fire when not paused and                                      // 233
-                  // are never undefined                                                                                           // 236
-                  // Filters out blacklisted fields according to cursor's projection.                                              // 237
-                  // XXX wrong place for this?                                                                                     // 238
-                  // furthermore, callbacks enqueue until the operation we're working on is                                        // 240
-                  // done.                                                                                                         // 241
+                    // 260
+                    query.resultsSnapshot = ordered ? [] : new LocalCollection._IdMap(); // 261
+                  } // wrap callbacks we were passed. callbacks only fire when not paused and                                      // 262
+                  // are never undefined                                                                                           // 265
+                  // Filters out blacklisted fields according to cursor's projection.                                              // 266
+                  // XXX wrong place for this?                                                                                     // 267
+                  // furthermore, callbacks enqueue until the operation we're working on is                                        // 269
+                  // done.                                                                                                         // 270
                   //
                   //
                   var wrapCallback = function (fn) {
-                    // 242
+                    // 271
                     if (!fn) {
-                      // 243
-                      return function () {}; // 244
-                    } // 245
+                      // 272
+                      return function () {}; // 273
+                    } // 274
                     //
-                    var self = _this3; // 247
+                    var self = _this4; // 276
                     return function () /* args*/{
-                      // 248
-                      var _this4 = this; // 248
+                      // 277
+                      var _this5 = this; // 277
                       //
                       if (self.collection.paused) {
-                        // 249
-                        return; // 250
-                      } // 251
+                        // 278
+                        return; // 279
+                      } // 280
                       //
-                      var args = arguments; // 253
+                      var args = arguments; // 282
                       //
                       self.collection._observeQueue.queueTask(function () {
-                        // 255
-                        fn.apply(_this4, args); // 256
-                      }); // 257
-                    }; // 258
-                  }; // 259
+                        // 284
+                        fn.apply(_this5, args); // 285
+                      }); // 286
+                    }; // 287
+                  }; // 288
                   //
-                  query.added = wrapCallback(options.added); // 261
-                  query.changed = wrapCallback(options.changed); // 262
-                  query.removed = wrapCallback(options.removed); // 263
+                  query.added = wrapCallback(options.added); // 290
+                  query.changed = wrapCallback(options.changed); // 291
+                  query.removed = wrapCallback(options.removed); // 292
                   //
                   if (ordered) {
-                    // 265
-                    query.addedBefore = wrapCallback(options.addedBefore); // 266
-                    query.movedBefore = wrapCallback(options.movedBefore); // 267
-                  } // 268
+                    // 294
+                    query.addedBefore = wrapCallback(options.addedBefore); // 295
+                    query.movedBefore = wrapCallback(options.movedBefore); // 296
+                  } // 297
                   //
                   if (!options._suppress_initial && !this.collection.paused) {
-                    // 270
-                    var results = ordered ? query.results : query.results._map; // 271
+                    // 299
+                    var results = ordered ? query.results : query.results._map; // 300
                     Object.keys(results).forEach(function (key) {
-                      // 273
-                      var doc = results[key]; // 274
-                      var fields = EJSON.clone(doc); // 275
-                      delete fields._id; // 277
+                      // 302
+                      var doc = results[key]; // 303
+                      var fields = EJSON.clone(doc); // 304
+                      delete fields._id; // 306
                       //
                       if (ordered) {
-                        // 279
-                        query.addedBefore(doc._id, _this3._projectionFn(fields), null); // 280
-                      } // 281
+                        // 308
+                        query.addedBefore(doc._id, _this4._projectionFn(fields), null); // 309
+                      } // 310
                       //
-                      query.added(doc._id, _this3._projectionFn(fields)); // 283
-                    }); // 284
-                  } // 285
+                      query.added(doc._id, _this4._projectionFn(fields)); // 312
+                    }); // 313
+                  } // 314
                   //
-                  var handle = Object.assign(new LocalCollection.ObserveHandle(), { // 287
-                    collection: this.collection, // 288
+                  var handle = Object.assign(new LocalCollection.ObserveHandle(), { // 316
+                    collection: this.collection, // 317
                     stop: function () {
-                      // 289
-                      if (_this3.reactive) {
-                        // 290
-                        delete _this3.collection.queries[qid]; // 291
-                      } // 292
-                    } // 293
-                  }); // 287
+                      // 318
+                      if (_this4.reactive) {
+                        // 319
+                        delete _this4.collection.queries[qid]; // 320
+                      } // 321
+                    } // 322
+                  }); // 316
                   //
                   if (this.reactive && Tracker.active) {
-                    // 296
-                    // XXX in many cases, the same observe will be recreated when                                                  // 297
-                    // the current autorun is rerun.  we could save work by                                                        // 298
-                    // letting it linger across rerun and potentially get                                                          // 299
-                    // repurposed if the same observe is performed, using logic                                                    // 300
-                    // similar to that of Meteor.subscribe.                                                                        // 301
+                    // 325
+                    // XXX in many cases, the same observe will be recreated when                                                  // 326
+                    // the current autorun is rerun.  we could save work by                                                        // 327
+                    // letting it linger across rerun and potentially get                                                          // 328
+                    // repurposed if the same observe is performed, using logic                                                    // 329
+                    // similar to that of Meteor.subscribe.                                                                        // 330
                     Tracker.onInvalidate(function () {
-                      // 302
-                      handle.stop(); // 303
-                    }); // 304
-                  } // run the observe callbacks resulting from the initial contents                                               // 305
-                  // before we leave the observe.                                                                                  // 308
+                      // 331
+                      handle.stop(); // 332
+                    }); // 333
+                  } // run the observe callbacks resulting from the initial contents                                               // 334
+                  // before we leave the observe.                                                                                  // 337
                   //
                   //
-                  this.collection._observeQueue.drain(); // 309
+                  this.collection._observeQueue.drain(); // 338
                   //
-                  return handle; // 311
-                } // 312
+                  return handle; // 340
+                } // 341
                 //
                 return observeChanges; //
               }(); // Since we don't actually have a "nextObject" interface, there's really no                                     //
-              // reason to have a "rewind" interface.  All it did was make multiple calls                                          // 315
-              // to fetch/map/forEach return nothing the second time.                                                              // 316
-              // XXX COMPAT WITH 0.8.1                                                                                             // 317
+              // reason to have a "rewind" interface.  All it did was make multiple calls                                          // 344
+              // to fetch/map/forEach return nothing the second time.                                                              // 345
+              // XXX COMPAT WITH 0.8.1                                                                                             // 346
               //
               //
               Cursor.prototype.rewind = function () {
@@ -30197,7 +30238,7 @@ __meteor_runtime_config__ = {
                 //
                 return rewind; //
               }(); // XXX Maybe we need a version of observe that just calls a callback if                                         //
-              // anything changed.                                                                                                 // 321
+              // anything changed.                                                                                                 // 350
               //
               //
               Cursor.prototype._depend = function () {
@@ -30205,25 +30246,25 @@ __meteor_runtime_config__ = {
                 function _depend(changers, _allow_unordered) {
                   //
                   if (Tracker.active) {
-                    // 323
-                    var dependency = new Tracker.Dependency(); // 324
-                    var notify = dependency.changed.bind(dependency); // 325
-                    dependency.depend(); // 327
-                    var options = { // 329
-                      _allow_unordered: _allow_unordered, // 329
-                      _suppress_initial: true // 329
-                    }; // 329
+                    // 352
+                    var dependency = new Tracker.Dependency(); // 353
+                    var notify = dependency.changed.bind(dependency); // 354
+                    dependency.depend(); // 356
+                    var options = { // 358
+                      _allow_unordered: _allow_unordered, // 358
+                      _suppress_initial: true // 358
+                    }; // 358
                     ['added', 'addedBefore', 'changed', 'movedBefore', 'removed'].forEach(function (fn) {
-                      // 331
+                      // 360
                       if (changers[fn]) {
-                        // 333
-                        options[fn] = notify; // 334
-                      } // 335
-                    }); // observeChanges will stop() when this computation is invalidated                                         // 336
+                        // 362
+                        options[fn] = notify; // 363
+                      } // 364
+                    }); // observeChanges will stop() when this computation is invalidated                                         // 365
                     //
-                    this.observeChanges(options); // 339
-                  } // 340
-                } // 341
+                    this.observeChanges(options); // 368
+                  } // 369
+                } // 370
                 //
                 return _depend; //
               }(); //
@@ -30232,127 +30273,127 @@ __meteor_runtime_config__ = {
                 //
                 function _getCollectionName() {
                   //
-                  return this.collection.name; // 344
-                } // 345
+                  return this.collection.name; // 373
+                } // 374
                 //
                 return _getCollectionName; //
               }(); // Returns a collection of matching objects, but doesn't deep copy them.                                        //
-              //                                                                                                                   // 348
-              // If ordered is set, returns a sorted array, respecting sorter, skip, and                                           // 349
-              // limit properties of the query.  if sorter is falsey, no sort -- you get the                                       // 350
-              // natural order.                                                                                                    // 351
-              //                                                                                                                   // 352
-              // If ordered is not set, returns an object mapping from ID to doc (sorter,                                          // 353
-              // skip and limit should not be set).                                                                                // 354
-              //                                                                                                                   // 355
-              // If ordered is set and this cursor is a $near geoquery, then this function                                         // 356
-              // will use an _IdMap to track each distance from the $near argument point in                                        // 357
-              // order to use it as a sort key. If an _IdMap is passed in the 'distances'                                          // 358
-              // argument, this function will clear it and use it for this purpose                                                 // 359
-              // (otherwise it will just create its own _IdMap). The observeChanges                                                // 360
-              // implementation uses this to remember the distances after this function                                            // 361
-              // returns.                                                                                                          // 362
+              //                                                                                                                   // 377
+              // If ordered is set, returns a sorted array, respecting sorter, skip, and                                           // 378
+              // limit properties of the query.  if sorter is falsey, no sort -- you get the                                       // 379
+              // natural order.                                                                                                    // 380
+              //                                                                                                                   // 381
+              // If ordered is not set, returns an object mapping from ID to doc (sorter,                                          // 382
+              // skip and limit should not be set).                                                                                // 383
+              //                                                                                                                   // 384
+              // If ordered is set and this cursor is a $near geoquery, then this function                                         // 385
+              // will use an _IdMap to track each distance from the $near argument point in                                        // 386
+              // order to use it as a sort key. If an _IdMap is passed in the 'distances'                                          // 387
+              // argument, this function will clear it and use it for this purpose                                                 // 388
+              // (otherwise it will just create its own _IdMap). The observeChanges                                                // 389
+              // implementation uses this to remember the distances after this function                                            // 390
+              // returns.                                                                                                          // 391
               //
               //
               Cursor.prototype._getRawObjects = function () {
                 //
                 function _getRawObjects() {
                   //
-                  var _this5 = this; // 363
+                  var _this6 = this; // 392
                   //
-                  var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {}; // 363
-                  // XXX use OrderedDict instead of array, and make IdMap and OrderedDict                                          // 364
-                  // compatible                                                                                                    // 365
-                  var results = options.ordered ? [] : new LocalCollection._IdMap(); // fast path for single ID value              // 366
+                  var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {}; // 392
+                  // XXX use OrderedDict instead of array, and make IdMap and OrderedDict                                          // 393
+                  // compatible                                                                                                    // 394
+                  var results = options.ordered ? [] : new LocalCollection._IdMap(); // fast path for single ID value              // 395
                   //
                   if (this._selectorId !== undefined) {
-                    // 369
-                    // If you have non-zero skip and ask for a single id, you get                                                  // 370
-                    // nothing. This is so it matches the behavior of the '{_id: foo}'                                             // 371
-                    // path.                                                                                                       // 372
+                    // 398
+                    // If you have non-zero skip and ask for a single id, you get                                                  // 399
+                    // nothing. This is so it matches the behavior of the '{_id: foo}'                                             // 400
+                    // path.                                                                                                       // 401
                     if (this.skip) {
-                      // 373
-                      return results; // 374
-                    } // 375
+                      // 402
+                      return results; // 403
+                    } // 404
                     //
-                    var selectedDoc = this.collection._docs.get(this._selectorId); // 377
+                    var selectedDoc = this.collection._docs.get(this._selectorId); // 406
                     //
                     if (selectedDoc) {
-                      // 379
-                      if (options.ordered) {
-                        // 380
-                        results.push(selectedDoc); // 381
-                      } else {
-                        // 382
-                        results.set(this._selectorId, selectedDoc); // 383
-                      } // 384
-                    } // 385
-                    //
-                    return results; // 387
-                  } // slow path for arbitrary selector, sort, skip, limit                                                         // 388
-                  // in the observeChanges case, distances is actually part of the "query"                                         // 392
-                  // (ie, live results set) object.  in other cases, distances is only used                                        // 393
-                  // inside this function.                                                                                         // 394
-                  //
-                  //
-                  var distances = void 0; // 395
-                  //
-                  if (this.matcher.hasGeoQuery() && options.ordered) {
-                    // 396
-                    if (options.distances) {
-                      // 397
-                      distances = options.distances; // 398
-                      distances.clear(); // 399
-                    } else {
-                      // 400
-                      distances = new LocalCollection._IdMap(); // 401
-                    } // 402
-                  } // 403
-                  //
-                  this.collection._docs.forEach(function (doc, id) {
-                    // 405
-                    var matchResult = _this5.matcher.documentMatches(doc); // 406
-                    //
-                    if (matchResult.result) {
                       // 408
                       if (options.ordered) {
                         // 409
-                        results.push(doc); // 410
-                        //
-                        if (distances && matchResult.distance !== undefined) {
-                          // 412
-                          distances.set(id, matchResult.distance); // 413
-                        } // 414
+                        results.push(selectedDoc); // 410
                       } else {
-                        // 415
-                        results.set(id, doc); // 416
-                      } // 417
-                    } // Fast path for limited unsorted queries.                                                                   // 418
-                    // XXX 'length' check here seems wrong for ordered                                                             // 421
+                        // 411
+                        results.set(this._selectorId, selectedDoc); // 412
+                      } // 413
+                    } // 414
                     //
-                    //
-                    return !_this5.limit || _this5.skip || _this5.sorter || results.length !== _this5.limit; // 422
-                  }); // 428
+                    return results; // 416
+                  } // slow path for arbitrary selector, sort, skip, limit                                                         // 417
+                  // in the observeChanges case, distances is actually part of the "query"                                         // 421
+                  // (ie, live results set) object.  in other cases, distances is only used                                        // 422
+                  // inside this function.                                                                                         // 423
                   //
-                  if (!options.ordered) {
-                    // 430
-                    return results; // 431
+                  //
+                  var distances = void 0; // 424
+                  //
+                  if (this.matcher.hasGeoQuery() && options.ordered) {
+                    // 425
+                    if (options.distances) {
+                      // 426
+                      distances = options.distances; // 427
+                      distances.clear(); // 428
+                    } else {
+                      // 429
+                      distances = new LocalCollection._IdMap(); // 430
+                    } // 431
                   } // 432
                   //
-                  if (this.sorter) {
+                  this.collection._docs.forEach(function (doc, id) {
                     // 434
-                    results.sort(this.sorter.getComparator({ // 435
-                      distances: distances // 435
-                    })); // 435
-                  } // 436
+                    var matchResult = _this6.matcher.documentMatches(doc); // 435
+                    //
+                    if (matchResult.result) {
+                      // 437
+                      if (options.ordered) {
+                        // 438
+                        results.push(doc); // 439
+                        //
+                        if (distances && matchResult.distance !== undefined) {
+                          // 441
+                          distances.set(id, matchResult.distance); // 442
+                        } // 443
+                      } else {
+                        // 444
+                        results.set(id, doc); // 445
+                      } // 446
+                    } // Fast path for limited unsorted queries.                                                                   // 447
+                    // XXX 'length' check here seems wrong for ordered                                                             // 450
+                    //
+                    //
+                    return !_this6.limit || _this6.skip || _this6.sorter || results.length !== _this6.limit; // 451
+                  }); // 457
+                  //
+                  if (!options.ordered) {
+                    // 459
+                    return results; // 460
+                  } // 461
+                  //
+                  if (this.sorter) {
+                    // 463
+                    results.sort(this.sorter.getComparator({ // 464
+                      distances: distances // 464
+                    })); // 464
+                  } // 465
                   //
                   if (!this.limit && !this.skip) {
-                    // 438
-                    return results; // 439
-                  } // 440
+                    // 467
+                    return results; // 468
+                  } // 469
                   //
-                  return results.slice(this.skip, this.limit ? this.limit + this.skip : results.length); // 442
-                } // 446
+                  return results.slice(this.skip, this.limit ? this.limit + this.skip : results.length); // 471
+                } // 475
                 //
                 return _getRawObjects; //
               }(); //
@@ -30361,19 +30402,19 @@ __meteor_runtime_config__ = {
                 //
                 function _publishCursor(subscription) {
                   //
-                  // XXX minimongo should not depend on mongo-livedata!                                                            // 449
+                  // XXX minimongo should not depend on mongo-livedata!                                                            // 478
                   if (!Package.mongo) {
-                    // 450
-                    throw new Error('Can\'t publish from Minimongo without the `mongo` package.'); // 451
-                  } // 454
+                    // 479
+                    throw new Error('Can\'t publish from Minimongo without the `mongo` package.'); // 480
+                  } // 483
                   //
                   if (!this.collection.name) {
-                    // 456
-                    throw new Error('Can\'t publish a cursor from a collection without a name.'); // 457
-                  } // 460
+                    // 485
+                    throw new Error('Can\'t publish a cursor from a collection without a name.'); // 486
+                  } // 489
                   //
-                  return Package.mongo.Mongo.Collection._publishCursor(this, subscription, this.collection.name); // 462
-                } // 467
+                  return Package.mongo.Mongo.Collection._publishCursor(this, subscription, this.collection.name); // 491
+                } // 496
                 //
                 return _publishCursor; //
               }(); //

@@ -38,6 +38,11 @@ Program
     "directory of the project"
   ].join("\n" + optionIndention))
 
+  .option("--release [meteor-release]", [
+    "Use a specific release of Meteor. Defaults to the globally installed release or",
+    "the one used in the specified source directory"
+  ].join("\n" + optionIndention))
+
   .action(function (options) {
     Bundler.bundle(options);
   });
