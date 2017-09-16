@@ -36,7 +36,8 @@
     "mys:accounts-phone",
     "jalik:ufs@0.7.1_1",
     "jalik:ufs-gridfs@0.1.4"
-  ]
+  ],
+  "npmPackages": []
 }
 ```
 
