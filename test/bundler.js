@@ -7,7 +7,7 @@ const expect = Chai.expect;
 describe("Bundler", function () {
   describe("bundle()", function () {
     it("should take all the packages in source, bundle them by config, and write the " +
-            "bundle to destination", function () {
+       "bundle to destination", function () {
       this.slow(80 * 1000);
 
       const dataDir = this.getDataDir("58864fa8f321c95adb91b973");
@@ -52,7 +52,7 @@ describe("Bundler", function () {
       const dataDir = this.getDataDir("589674ef8dc0877afb36d64b");
       const destinationFile = Path.resolve(this.testDir, "meteor-client.bundle.js");
       const configFile = Path.resolve(dataDir, "meteor-client.config.json");
-      const url = "http://1.0.0.127:8100"
+      const url = "http://1.0.0.127:8100";
 
       this.execBundler(["bundle",
         `--destination=${destinationFile}`,
@@ -77,6 +77,27 @@ describe("Bundler", function () {
       this.execBundler(["bundle",
         `--destination=${destinationFile}`,
         `--packs-dir=${packsDir}`
+      ]);
+
+      const expectedBundleFile = Path.resolve(dataDir, "meteor-client.bundle.js");
+      const actualBundleBuffer = Fs.readFileSync(destinationFile);
+      const expectedBundleBuffer = Fs.readFileSync(expectedBundleFile);
+
+      Fs.writeFileSync(expectedBundleFile, actualBundleBuffer);
+
+      expect(actualBundleBuffer).to.deep.equal(expectedBundleBuffer);
+    });
+
+    it("should use specified meteor release", function () {
+      this.slow(80 * 1000);
+
+      const dataDir = this.getDataDir("59b6a98c2987ff43125fdcfb");
+      const destinationFile = Path.resolve(this.testDir, "meteor-client.bundle.js");
+      const meteorRelease = "1.6-beta.26";
+
+      this.execBundler(["bundle",
+        `--destination=${destinationFile}`,
+        `--release=${meteorRelease}`
       ]);
 
       const expectedBundleFile = Path.resolve(dataDir, "meteor-client.bundle.js");
