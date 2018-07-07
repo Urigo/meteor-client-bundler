@@ -6,5 +6,7 @@
   "import": [
     "meteor-base"
   ],
+  "arch": "web.browser",
+  "disableReload": true,
   "npmPackages": []
 }
