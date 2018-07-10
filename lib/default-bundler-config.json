@@ -8,5 +8,9 @@
   ],
   "arch": "web.browser",
   "disableReload": true,
+  "npmInstall": true,
+  "writeRuntimeConfig": true,
+  "escapeCommonJS": true,
+  "generateNodeModules": false,
   "npmPackages": []
 }
