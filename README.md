@@ -45,6 +45,10 @@
 
 See [React Native Meteor Boilerplate](https://github.com/DAB0mB/ReactNativeMeteorBoilerplate).
 
+### Integrating with Angular CLI
+
+See [Angular CLI - Meteor Example](https://github.com/Urigo/angular-meteor/tree/master/examples/AngularCLI)
+
 ### License
 
 MIT
