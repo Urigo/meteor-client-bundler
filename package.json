@@ -11,7 +11,7 @@
     "meteor-client": "cli"
   },
   "scripts": {
-    "test": "make test"
+    "test": "mocha test/index --timeout=100000"
   },
   "dependencies": {
     "babel-core": "^6.24.0",
