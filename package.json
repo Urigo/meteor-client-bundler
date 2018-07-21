@@ -20,7 +20,7 @@
     "find-root": "^1.0.0",
     "merge": "^1.2.0",
     "rimraf": "^2.5.4",
-    "tmp": "0.0.31"
+    "tmp": "0.0.33"
   },
   "devDependencies": {
     "chai": "^3.5.0",
