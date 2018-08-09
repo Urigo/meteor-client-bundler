@@ -16,7 +16,7 @@
   "dependencies": {
     "babel-core": "6.26.3",
     "commander": "2.16.0",
-    "execa": "0.6.3",
+    "execa": "0.10.0",
     "find-root": "1.1.0",
     "merge": "1.2.0",
     "rimraf": "2.6.2",
