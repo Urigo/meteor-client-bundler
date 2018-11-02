@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "babel-core": "6.26.3",
-    "commander": "2.17.1",
+    "commander": "2.19.0",
     "execa": "0.10.0",
     "find-root": "1.1.0",
     "merge": "1.2.0",
