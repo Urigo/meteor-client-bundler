@@ -1,6 +1,6 @@
 {
   "name": "meteor-client-bundler",
-  "version": "0.5.9",
+  "version": "0.6.0",
   "description": "Bundles Meteor client-packages into a single module",
   "author": "Eytan Manor",
   "repository": {
@@ -23,7 +23,7 @@
     "tmp": "0.0.33"
   },
   "devDependencies": {
-    "chai": "3.5.0",
+    "chai": "4.2.0",
     "fs-extra": "7.0.1",
     "mocha": "5.2.0"
   },
