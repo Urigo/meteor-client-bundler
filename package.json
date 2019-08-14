@@ -19,7 +19,7 @@
     "execa": "2.0.3",
     "find-root": "1.1.0",
     "merge": "1.2.1",
-    "rimraf": "2.6.2",
+    "rimraf": "3.0.0",
     "tmp": "0.0.33"
   },
   "devDependencies": {
