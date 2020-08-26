@@ -2,6 +2,12 @@
 
 `meteor-client-bundler` is a module bundler which will take a bunch of Atmosphere package and put them into a single module, so we can load Meteor's client scripts regardless of what framework we're using to run our server. This project was originally created due to [Ionic2CLI-Meteor-Whatsapp](https://github.com/Urigo/Ionic2CLI-Meteor-WhatsApp) and the urge to combine both Ionic along with Meteor, so we can enjoy Ionic's great client and Meteor's powerful DDP client.
 
+### Install
+
+    $ yarn global add https://github.com/Urigo/meteor-client-bundler
+    or
+    $ npm install -g https://github.com/Urigo/meteor-client-bundler
+
 ### API
 
 #### Bundling
