@@ -18,7 +18,7 @@
     "commander": "6.0.0",
     "execa": "2.0.4",
     "find-root": "1.1.0",
-    "merge": "2.1.1",
+    "merge": "github:myndpm/js.merge",
     "rimraf": "3.0.0",
     "tmp": "0.1.0"
   },
